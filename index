@@ -1,499 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enneagram & Drama Triangle: How to Step Off</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        .slideshow-container {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slide {
-            display: none;
-            width: 90%;
-            max-width: 1000px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.5s ease-in-out;
-        }
-
-        .slide.active {
-            display: block;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .title-slide {
-            text-align: center;
-        }
-
-        .title-slide h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .title-slide p {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            margin-bottom: 30px;
-        }
-
-        .type-slide h2 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            text-align: center;
-            color: #FFE066;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .content-section {
-            margin-bottom: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 4px solid #FFE066;
-        }
-
-        .content-section h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            color: #FFE066;
-        }
-
-        .content-section p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .navigation {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            z-index: 100;
-        }
-
-        .nav-btn {
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            cursor: pointer;
-            font-size: 1rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .slide-counter {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            font-size: 1rem;
-        }
-
-        .triangle-visual {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .triangle {
-            width: 200px;
-            height: 200px;
-            position: relative;
-            margin: 0 30px;
-        }
-
-        .triangle-shape {
-            width: 0;
-            height: 0;
-            border-left: 100px solid transparent;
-            border-right: 100px solid transparent;
-            border-bottom: 173px solid rgba(255, 255, 255, 0.2);
-            margin: 0 auto;
-        }
-
-        .triangle-label {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .arrow {
-            font-size: 2rem;
-            align-self: center;
-            color: #FFE066;
-        }
-
-        .empowerment-slide {
-            text-align: center;
-        }
-
-        .empowerment-slide h2 {
-            color: #4ECDC4;
-            margin-bottom: 30px;
-        }
-
-        .role-comparison {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 20px;
-            align-items: center;
-            margin: 20px 0;
-        }
-
-        .role-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .drama-role {
-            border-left: 4px solid #FF6B6B;
-        }
-
-        .empowerment-role {
-            border-left: 4px solid #4ECDC4;
-        }
-
-        .overview-slide .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .type-summary {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .type-number {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #FFE066;
-            margin-bottom: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adaptive Strategy Assessment</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #fafaf8; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; }
+  #root { width: 100%; max-width: 620px; }
+</style>
 </head>
 <body>
-    <div class="slideshow-container">
-        <div class="slide-counter">
-            <span id="current-slide">1</span> / <span id="total-slides">12</span>
-        </div>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
 
-        <!-- Title Slide -->
-        <div class="slide active title-slide">
-            <h1>Enneagram & Drama Triangle</h1>
-            <p>How Each Type Can Step Off the Triangle into Empowerment</p>
-            <div class="triangle-visual">
-                <div class="triangle">
-                    <div class="triangle-label">Drama Triangle</div>
-                    <div class="triangle-shape"></div>
-                </div>
-                <div class="arrow">→</div>
-                <div class="triangle">
-                    <div class="triangle-label" style="color: #4ECDC4;">Empowerment Triangle</div>
-                    <div class="triangle-shape" style="border-bottom-color: rgba(78, 205, 196, 0.5);"></div>
-                </div>
-            </div>
-        </div>
+const imgs = {
+  P: [
+    { src: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80", alt: "Person alone at desk at night" },
+    { src: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80", alt: "Person reading alone by window" },
+    { src: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80", alt: "Person alone in quiet space" }
+  ],
+  O: [
+    { src: "https://images.unsplash.com/photo-1516195851888-6f1a981a862e?w=600&q=80", alt: "Two people in close intimate moment" },
+    { src: "https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=600&q=80", alt: "Two people in deep conversation" },
+    { src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80", alt: "Two people in singular focus" }
+  ],
+  S: [
+    { src: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80", alt: "Group around campfire at night" },
+    { src: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=600&q=80", alt: "Group gathered together" },
+    { src: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=600&q=80", alt: "People celebrating together" }
+  ]
+};
 
-        <!-- Overview Slide -->
-        <div class="slide empowerment-slide">
-            <h2>The Transformation Path</h2>
-            <div class="role-comparison">
-                <div class="role-box drama-role">
-                    <h3>Drama Triangle Roles</h3>
-                    <p><strong>Persecutor:</strong> Blames, criticizes, dominates</p>
-                    <p><strong>Rescuer:</strong> Over-helps, enables, self-sacrifices</p>
-                    <p><strong>Victim:</strong> Powerless, withdrawn, resentful</p>
-                </div>
-                <div class="arrow">→</div>
-                <div class="role-box empowerment-role">
-                    <h3>Empowerment Triangle Roles</h3>
-                    <p><strong>Challenger:</strong> Names truth constructively</p>
-                    <p><strong>Coach:</strong> Empowers through questions</p>
-                    <p><strong>Creator:</strong> Takes ownership, generates solutions</p>
-                </div>
-            </div>
-            <p style="margin-top: 30px; font-style: italic;">Each Enneagram type has predictable patterns of getting hooked and specific pathways to empowerment.</p>
-        </div>
+const g1 = [
+  { l: "A", t: "I tend to meet life with forward energy. I'm oriented toward impact, toward making things happen, toward leaving a mark on whatever I touch. I don't wait for things to come to me, and I can feel restless or frustrated when I'm blocked or slowed down. I know what I want, or at least I know what I'm moving toward, and I trust my own instincts about that more than I trust other people's opinions. I can be a lot, I know that. But pulling back or softening my presence has never felt like a real option. What I find hardest is when the world doesn't respond to what I'm putting into it, or when I have to slow down long enough to feel what's underneath the drive." },
+  { l: "B", t: "I tend to step back from the fray. Not out of fear, exactly, but because I do my best thinking and feeling at a remove. I need space to process, and I'm usually more alive inside than I appear on the outside. I'm not trying to avoid the world, but I've learned that I do better when I can come to it on my own terms rather than being swept up in its demands. I can be content in my own company in a way that others sometimes find hard to understand. What I find hardest is when the outside world presses in before I'm ready, or when I lose track of myself in the noise of other people's needs and agendas." },
+  { l: "C", t: "I'm someone who orients toward others. I pay attention to what's expected of me, what's needed, what the right thing to do is, and I feel it when I fall short of that. I'm reliable in ways that matter to me, and I take seriously my responsibilities to the people and communities I'm part of. I'm not passive, but I tend to check myself against something outside me, whether that's a standard, a person, or a sense of duty. What I find hardest is when I've given so much to what's expected that I've lost track of what I actually want, or when my loyalty or care doesn't feel like it lands the way I intended." }
+];
 
-        <!-- Type 1 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 1 - The Reformer</h2>
-            <div class="content-section">
-                <h3>Default Drama Role</h3>
-                <p><strong>Persecutor</strong> - Driven by anxiety about imperfection to correct and blame others</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>When standards aren't met, Ones slip into criticism and fault-finding, believing that pointing out flaws will create improvement</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Persecutor → Challenger:</strong> Name gaps constructively and hold high standards without shaming. Focus on solutions rather than blame.</p>
-            </div>
-        </div>
+const g2 = [
+  { l: "X", t: "I tend to lead with warmth and openness. I want things to go well, for people to feel good, for there to be harmony or possibility in whatever I'm part of. I'm usually the one looking for what's working, what could work, what might still be salvageable. I don't love sitting in difficulty for too long, and I've been told I can sometimes smooth things over before they've been fully felt. I genuinely care about the people around me and want to be connected, even when I'm not sure exactly what I need. What I find hardest is the moments when keeping things positive means I've lost track of what's actually true for me." },
+  { l: "Y", t: "I feel things strongly and I don't hide it well. I have a clear sense of what matters to me and a low tolerance for pretense or ambiguity. I want to know where I stand with people and where they stand with me, and I'd rather have a hard conversation than live in uncertainty. I push back when something feels wrong, and I notice injustice or inconsistency quickly. People sometimes experience me as a lot, and I understand that, though I'm usually more sensitive underneath than I let on. What I find hardest is trusting that I'm safe enough to be seen without having to fight for it or prove it." },
+  { l: "Z", t: "I tend to handle things by focusing on what needs to be done. I'm more comfortable in action or analysis than in open emotional territory, and I've built a lot of my sense of worth around being capable, reliable, or correct. I don't always know what I'm feeling until later, and I've learned to manage uncertainty by working harder, thinking more carefully, or holding myself to a higher standard. People experience me as composed, sometimes as distant. I'm not distant, exactly. I just process inward first. What I find hardest is the creeping sense that no matter how much I produce or how carefully I think, something essential is still missing." }
+];
 
-        <!-- Type 2 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 2 - The Helper</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Rescuer → Victim</strong> - Over-help to avoid rejection, then feel resentful when unappreciated</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about rejection fuels compulsive helping, leading to self-erasure and eventual resentment when others don't reciprocate</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Rescuer → Coach:</strong> Ask questions that empower others. Offer support without self-erasure by maintaining healthy boundaries.</p>
-            </div>
-        </div>
+const g3 = [
+  { l: "P", label: "Self-Preservation", t: "There's a part of me that's always quietly attending to safety and sufficiency. Not necessarily in a fearful way, but in a vigilant one. I notice my energy levels, my resources, my physical comfort, my financial stability. I think about what I need to sustain myself and whether I have enough of it. I tend to be careful about how I spend myself — my time, my money, my reserves — and I can feel it when something threatens my sense of security or stability. I'm usually more private than I appear. I take care of myself and the people closest to me, and I find it genuinely difficult to relax when the basics feel uncertain. What grounds me most is knowing I have what I need to be okay." },
+  { l: "O", label: "One-to-One", t: "My attention naturally moves toward intensity and depth in connection. I'm drawn to what's alive between me and another person — what's real, what has charge. I notice chemistry, I notice when something is missing, I notice when a connection has gone flat. I can be focused, even consuming, in how I give my attention to what or who matters most to me. I'm less interested in surface than in what's underneath. I want to feel that the people and experiences in my life are real, significant, transformative even. What I find hardest is when connection feels ordinary or when I sense that what's between me and someone else has lost its aliveness." },
+  { l: "S", label: "Social", t: "I'm always aware of the room, the group, the system I'm part of. I notice where I stand, how things are going collectively, what the dynamics are between people, what my role is and whether it's working. I care about belonging and about contributing to something beyond myself. I track how the group is functioning, where there's tension, who's in and who's out, whether things are fair. Sometimes this shows up as wanting to be recognized and valued by the community I'm part of. Other times it shows up as wanting to make sure the group is working well, even at personal cost. What I find hardest is feeling like I don't belong, or like my contribution doesn't matter." }
+];
 
-        <!-- Type 3 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 3 - The Achiever</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Rescuer → Persecutor</strong> - Try to help others succeed, then dominate when feeling threatened</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about failure drives constant proving and competing, leading to dominating behaviors when success feels threatened</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Rescuer → Coach:</strong> Model vulnerability and invite others to succeed too. Move from proving worth to authentic contribution.</p>
-            </div>
-        </div>
+const typeMap = { AX:7,AY:8,AZ:3,BX:9,BY:4,BZ:5,CX:2,CY:6,CZ:1 };
 
-        <!-- Type 4 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 4 - The Individualist</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Victim → Persecutor</strong> - Withdraw in suffering, then lash out when feeling abandoned</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about abandonment fuels emotional withdrawal or explosive reactions when feeling misunderstood or left out</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Victim → Creator:</strong> Use emotional depth to generate possibilities rather than staying stuck in suffering. Transform pain into creative action.</p>
-            </div>
-        </div>
+const types = {
+  1:{name:"Type 1 — Strict Perfectionist",fear:"Being wrong, corrupt, or morally flawed",strategy:"Maintain standards. Correct what's imperfect. Control through integrity.",gift:"Principled, responsible, precise — brings care and quality to everything",cost:"Chronic resentment, self-criticism, difficulty relaxing into good enough",inquiry:"What would it feel like if this were enough, exactly as it is?"},
+  2:{name:"Type 2 — Considerate Helper",fear:"Being unwanted or unlovable without giving something first",strategy:"Anticipate needs. Be indispensable. Secure love through giving.",gift:"Warm, empathetic, generous — deeply attuned to what others need",cost:"Difficulty receiving, resentment when giving goes unrecognized, loss of self",inquiry:"What do you need right now — not what does everyone else need?"},
+  3:{name:"Type 3 — Competitive Achiever",fear:"Being worthless or a failure without achievement",strategy:"Perform. Produce results. Secure value through success and image.",gift:"Efficient, adaptable, motivating — makes things happen",cost:"Disconnection from authentic feeling, image over intimacy, burnout",inquiry:"Who are you when no one is evaluating your performance?"},
+  4:{name:"Type 4 — Intense Creative",fear:"Being ordinary or having no distinctive significance",strategy:"Cultivate depth and uniqueness. Secure identity through what makes me different.",gift:"Creative, authentic, emotionally perceptive — brings depth and originality",cost:"Idealization of what's missing, chronic longing, mood volatility",inquiry:"What's actually here right now — not what's missing?"},
+  5:{name:"Type 5 — Quiet Specialist",fear:"Being helpless, incompetent, or overwhelmed by others' demands",strategy:"Conserve energy. Gather knowledge. Secure safety through self-sufficiency.",gift:"Perceptive, objective, innovative — brings precision and original thinking",cost:"Withdrawal, emotional distance, difficulty with spontaneous engagement",inquiry:"What might happen if you let someone in before you feel fully ready?"},
+  6:{name:"Type 6 — Loyal Skeptic",fear:"Being without support or caught off guard",strategy:"Scan for threat. Test loyalty. Secure safety through preparation and vigilance.",gift:"Reliable, thorough, fiercely loyal — anticipates what others miss",cost:"Anxiety, self-doubt, difficulty trusting when things are actually okay",inquiry:"What does your body tell you right now, before your mind starts rehearsing?"},
+  7:{name:"Type 7 — Enthusiastic Visionary",fear:"Being trapped in pain, deprivation, or limitation",strategy:"Keep options open. Reframe toward positive. Secure freedom through possibility.",gift:"Optimistic, imaginative, energizing — generates ideas and momentum",cost:"Scattered attention, unfinished depth, difficulty staying with discomfort",inquiry:"What happens if you stay with this feeling instead of moving past it?"},
+  8:{name:"Type 8 — The Challenger",fear:"Being weak, controlled, or betrayed",strategy:"Take charge. Project strength. Secure autonomy through power and directness.",gift:"Confident, decisive, protective — advocates fiercely for what matters",cost:"Difficulty with vulnerability, tendency to dominate, can push people away",inquiry:"What becomes possible when you let someone see where you're soft?"},
+  9:{name:"Type 9 — Adaptive Peacemaker",fear:"Being in conflict or disconnected from others",strategy:"Accommodate. Minimize friction. Secure belonging through harmony.",gift:"Receptive, calming, genuinely collaborative — holds space for everyone",cost:"Self-erasure, difficulty knowing own wants, passive resistance when pushed",inquiry:"What do you actually want here — not what keeps the peace?"}
+};
 
-        <!-- Type 5 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 5 - The Investigator</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Victim → Persecutor</strong> - Withdraw to conserve energy, then attack when pushed beyond limits</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about depletion leads to withholding resources, information, and energy, creating isolation and eventual conflict</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Victim → Creator:</strong> Share insights early and collaborate instead of hoarding knowledge. Courage equals contribution.</p>
-            </div>
-        </div>
+const addons = {
+  P:{1:"Your perfectionism organizes around your own routines, body, and material world — exacting standards about how you live and care for yourself.",2:"Your giving focuses close to home, tending and protecting the people in your immediate circle with fierce care.",3:"Your drive to succeed is grounded in material security. Achievement matters partly because it means you'll have enough.",4:"Your longing turns inward, attending closely to your own physical and emotional states.",5:"You conserve energy and resources carefully, highly self-sufficient and private about your needs.",6:"Your vigilance focuses on physical safety and stability — preparing carefully for what could go wrong close to home.",7:"You seek pleasure and satisfaction in immediate experience, comfort and sensory richness close at hand.",8:"Your need for control shows up in your immediate environment — survival secured on your own terms.",9:"You merge with your immediate environment and routines; disruption to daily rhythms can feel destabilizing."},
+  O:{1:"Your perfectionism focuses on reforming and improving others — more passionate and outwardly intense than the typical One.",2:"You seek deep, irreplaceable one-on-one bonds, wanting to be uniquely needed by specific people.",3:"Your drive focuses on attracting and winning specific people; image matters in the context of particular relationships.",4:"You seek the ideal connection with consuming intensity — longing and the search for depth organize your attention.",5:"You give select people full access while keeping others entirely out. Depth with one, distance from all others.",6:"You test loyalty through intensity, pushing against the people you care about to see if they'll stay.",7:"You seek fascination in specific people and can become fixated on particular connections that excite you.",8:"You seek intensity and real contact in one-on-one connection — consuming in how you give your full attention.",9:"You merge with specific people, adapting yourself to fit them until your own desires can disappear into theirs."},
+  S:{1:"Your perfectionism extends to improving the systems and communities you're part of — responsible for making things better.",2:"You give broadly to groups and communities, wanting to be needed and appreciated by many.",3:"You perform for an audience. Status and being seen as successful by your community organize your drive.",4:"You seek a distinctive place within your community, wanting to be recognized for what makes you unique.",5:"You engage with systems through knowledge and expertise, contributing meaningfully to the collective on your own terms.",6:"You organize your loyalty around groups and causes — belonging to something trustworthy gives you security.",7:"You seek stimulation and possibility within community, wanting to be part of something exciting.",8:"You protect and lead groups, taking responsibility for communities in your charge.",9:"You prioritize group harmony above all, mediating and smoothing conflict to make sure everyone feels included."}
+};
 
-        <!-- Type 6 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 6 - The Loyalist</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Victim → Persecutor</strong> - Feel powerless against threats, then blame authority figures</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about insecurity drives constant doubt and questioning, leading to blaming authority when feeling unsupported</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Victim → Creator:</strong> Transform vigilance into foresight. Design systems that prevent problems rather than just worrying about them.</p>
-            </div>
-        </div>
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-        <!-- Type 7 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 7 - The Enthusiast</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Rescuer → Victim</strong> - Over-help with positivity, then escape when reality becomes painful</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about pain fuels compulsive optimism and helping others avoid difficulty, then fleeing when problems persist</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Rescuer → Coach:</strong> Channel energy into helping others reframe situations realistically, not avoidantly. Stay present with difficulty.</p>
-            </div>
-        </div>
+const stages = ["intro","g1","g2","g3para","g3img","result"];
 
-        <!-- Type 8 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 8 - The Challenger</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Persecutor → Rescuer</strong> - Dominate to avoid vulnerability, then over-protect when others seem weak</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about vulnerability drives need to control and dominate, creating power struggles and defensive reactions</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Persecutor → Challenger:</strong> Use strength to protect and support the system, not overpower it. Empower others' voices and agency.</p>
-            </div>
-        </div>
+const S = {
+  wrap: { maxWidth: 600, margin: "0 auto", padding: "32px 20px", fontFamily: "Georgia, serif", color: "#1a1a1a" },
+  label: { fontSize: 11, color: "#999", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8, display: "block" },
+  title: { fontSize: 22, fontWeight: 500, marginBottom: 10, lineHeight: 1.35 },
+  sub: { fontSize: 14, color: "#555", lineHeight: 1.75, marginBottom: 24 },
+  bar: { height: 2, background: "#e8e8e8", borderRadius: 2, marginBottom: 32 },
+  divider: { height: 1, background: "#eee", margin: "24px 0" },
+  nav: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28 },
+  btn: { padding: "10px 24px", fontSize: 14, border: "1px solid #ccc", borderRadius: 8, background: "#fff", cursor: "pointer", color: "#333" },
+  btnP: { padding: "10px 24px", fontSize: 14, border: "1px solid #1a1a1a", borderRadius: 8, background: "#1a1a1a", color: "#fff", cursor: "pointer" },
+  btnD: { padding: "10px 24px", fontSize: 14, border: "1px solid #e0e0e0", borderRadius: 8, background: "#fafafa", cursor: "not-allowed", color: "#ccc" },
+  step: { fontSize: 13, color: "#aaa" },
+  paraOpt: (sel) => ({ border: sel ? "1.5px solid #1a1a1a" : "1px solid #e0e0e0", borderRadius: 12, padding: "20px 22px", marginBottom: 12, cursor: "pointer", background: sel ? "#f5f5f3" : "#fff", transition: "all 0.15s" }),
+  letter: (sel) => ({ width: 28, height: 28, borderRadius: "50%", border: sel ? "none" : "1px solid #ddd", background: sel ? "#1a1a1a" : "#fafafa", color: sel ? "#fff" : "#aaa", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 600, marginBottom: 14 }),
+  optText: { fontSize: 14, lineHeight: 1.8, color: "#222" },
+  imgGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 28 },
+  imgWrap: (sel) => ({ borderRadius: 10, overflow: "hidden", cursor: "pointer", border: sel ? "2.5px solid #1a1a1a" : "2.5px solid transparent", aspectRatio: "4/3", position: "relative", background: "#f0f0f0" }),
+  img: { width: "100%", height: "100%", objectFit: "cover", display: "block" },
+  check: { position: "absolute", top: 8, right: 8, width: 24, height: 24, background: "#1a1a1a", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" },
+  checkDot: { width: 9, height: 9, background: "#fff", borderRadius: "50%" },
+  conflict: { background: "#f8f8f6", border: "1px solid #e5e5e0", borderRadius: 10, padding: 16, fontSize: 13, color: "#666", marginBottom: 20, lineHeight: 1.65 },
+  card: { border: "1px solid #e5e5e5", borderRadius: 14, overflow: "hidden", marginBottom: 20 },
+  row: (last) => ({ display: "flex", gap: 18, padding: "16px 22px", borderBottom: last ? "none" : "1px solid #eee" }),
+  rowLabel: { fontSize: 11, color: "#aaa", minWidth: 110, paddingTop: 2, letterSpacing: "0.04em", textTransform: "uppercase", flexShrink: 0 },
+  rowVal: { fontSize: 14, lineHeight: 1.65 },
+  code: { fontSize: 11, color: "#bbb", letterSpacing: "0.14em", marginBottom: 6 },
+  rName: { fontSize: 26, fontWeight: 500, marginBottom: 4, lineHeight: 1.2 },
+  rInst: { fontSize: 14, color: "#888", marginBottom: 28 },
+  note: { fontSize: 13, color: "#777", lineHeight: 1.7, marginBottom: 24 },
+  second: { fontSize: 13, color: "#555", lineHeight: 1.65, padding: "14px 20px", background: "#f8f8f6", borderRadius: 10, border: "1px solid #ebe8e0", marginBottom: 18 }
+};
 
-        <!-- Type 9 Slide -->
-        <div class="slide type-slide">
-            <h2>Type 9 - The Peacemaker</h2>
-            <div class="content-section">
-                <h3>Default Drama Roles</h3>
-                <p><strong>Victim → Rescuer</strong> - Withdraw to avoid conflict, then over-merge to keep peace</p>
-            </div>
-            <div class="content-section">
-                <h3>How They Get Hooked</h3>
-                <p>Anxiety about conflict drives withdrawal and self-forgetting, leading to passive-aggressive patterns and loss of self</p>
-            </div>
-            <div class="content-section">
-                <h3>Path to Empowerment</h3>
-                <p><strong>Victim → Creator:</strong> Step in with authentic presence. Stabilize the system by naming what others avoid discussing.</p>
-            </div>
-        </div>
-
-        <!-- Summary Slide -->
-        <div class="slide empowerment-slide">
-            <h2>Key Transformation Principles</h2>
-            <div class="overview-slide">
-                <div class="content-section">
-                    <h3>Recognize Your Pattern</h3>
-                    <p>Each type has predictable ways of getting hooked into drama. Awareness is the first step to freedom.</p>
-                </div>
-                <div class="content-section">
-                    <h3>Transform Anxiety into Action</h3>
-                    <p>The core anxiety that drives drama roles can be redirected into empowered, constructive behavior.</p>
-                </div>
-                <div class="content-section">
-                    <h3>Practice New Responses</h3>
-                    <p>Stepping off the triangle requires conscious practice of new behaviors until they become natural.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Final Slide -->
-        <div class="slide title-slide">
-            <h1>Step Into Empowerment</h1>
-            <p>Transform your Enneagram patterns from drama to empowerment</p>
-            <div style="margin-top: 40px; font-size: 1.2rem;">
-                <p><strong>Remember:</strong> The goal isn't to eliminate your type's energy—it's to channel it constructively.</p>
-            </div>
-        </div>
+function Para({ p, sel, onSel }) {
+  return (
+    <div style={S.paraOpt(sel)} onClick={onSel}>
+      <div style={S.letter(sel)}>{p.l}</div>
+      <div style={S.optText}>{p.t}</div>
     </div>
+  );
+}
 
-    <div class="navigation">
-        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
-        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
+function ProgressBar({ stage }) {
+  const pct = (stages.indexOf(stage) / (stages.length - 1)) * 100;
+  return <div style={S.bar}><div style={{ height: "100%", background: "#1a1a1a", borderRadius: 2, transition: "width 0.4s ease", width: pct + "%" }} /></div>;
+}
+
+function App() {
+  const [stage, setStage] = useState("intro");
+  const [g1s, setG1] = useState(null);
+  const [g2s, setG2] = useState(null);
+  const [g3p, setG3p] = useState(null);
+  const [g3i, setG3i] = useState(null);
+  const [allImgs, setAllImgs] = useState([]);
+
+  const buildImgs = () => shuffle([
+    ...imgs.P.map((img, i) => ({ ...img, key: "P", id: "P" + i })),
+    ...imgs.O.map((img, i) => ({ ...img, key: "O", id: "O" + i })),
+    ...imgs.S.map((img, i) => ({ ...img, key: "S", id: "S" + i }))
+  ]);
+
+  useEffect(() => { setAllImgs(buildImgs()); }, []);
+
+  const go = (s) => setStage(s);
+
+  const restart = () => {
+    setStage("intro"); setG1(null); setG2(null); setG3p(null); setG3i(null);
+    setAllImgs(buildImgs());
+  };
+
+  if (stage === "intro") return (
+    <div style={S.wrap}>
+      <span style={S.label}>Adaptive Strategy Assessment</span>
+      <div style={S.title}>Find your adaptive strategy</div>
+      <div style={S.sub}>Three short sorting exercises. Each approaches self-knowledge from a different angle.<br /><br />Choose what feels most true — not what sounds best. No right answers. About five to eight minutes.</div>
+      <div style={S.divider} />
+      <div style={{ ...S.sub, fontSize: 13 }}>This is a starting point. Your type will clarify through the workshop itself.</div>
+      <div style={S.nav}><span /><button style={S.btnP} onClick={() => go("g1")}>Begin</button></div>
     </div>
+  );
 
-    <script>
-        let currentSlideIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-        
-        document.getElementById('total-slides').textContent = totalSlides;
+  if (stage === "g1") return (
+    <div style={S.wrap}>
+      <ProgressBar stage={stage} />
+      <span style={S.label}>Part one of three</span>
+      <div style={S.title}>Read all three. Choose the one that feels most like you.</div>
+      <div style={S.sub}>Not who you want to be — the one with the most ring of truth about how you've generally moved through life.</div>
+      {g1.map(p => <Para key={p.l} p={p} sel={g1s === p.l} onSel={() => setG1(p.l)} />)}
+      <div style={S.nav}>
+        <button style={S.btn} onClick={() => go("intro")}>Back</button>
+        <span style={S.step}>1 / 3</span>
+        <button style={g1s ? S.btnP : S.btnD} onClick={() => g1s && go("g2")}>Next</button>
+      </div>
+    </div>
+  );
 
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            slides[index].classList.add('active');
-            
-            document.getElementById('current-slide').textContent = index + 1;
-            
-            // Update navigation buttons
-            document.getElementById('prevBtn').disabled = index === 0;
-            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
-        }
+  if (stage === "g2") return (
+    <div style={S.wrap}>
+      <ProgressBar stage={stage} />
+      <span style={S.label}>Part two of three</span>
+      <div style={S.title}>Read all three. Choose the one that feels most like you.</div>
+      <div style={S.sub}>Again — the one with the most truth, not the most appeal.</div>
+      {g2.map(p => <Para key={p.l} p={p} sel={g2s === p.l} onSel={() => setG2(p.l)} />)}
+      <div style={S.nav}>
+        <button style={S.btn} onClick={() => go("g1")}>Back</button>
+        <span style={S.step}>2 / 3</span>
+        <button style={g2s ? S.btnP : S.btnD} onClick={() => g2s && go("g3para")}>Next</button>
+      </div>
+    </div>
+  );
 
-        function changeSlide(direction) {
-            currentSlideIndex += direction;
-            if (currentSlideIndex < 0) currentSlideIndex = 0;
-            if (currentSlideIndex >= totalSlides) currentSlideIndex = totalSlides - 1;
-            showSlide(currentSlideIndex);
-        }
+  if (stage === "g3para") return (
+    <div style={S.wrap}>
+      <ProgressBar stage={stage} />
+      <span style={S.label}>Part three of three</span>
+      <div style={S.title}>Read all three. Choose the one that feels most like you.</div>
+      <div style={S.sub}>These describe what your attention is quietly attending to underneath everything else.</div>
+      {g3.map(p => <Para key={p.l} p={p} sel={g3p === p.l} onSel={() => setG3p(p.l)} />)}
+      <div style={S.nav}>
+        <button style={S.btn} onClick={() => go("g2")}>Back</button>
+        <span style={S.step}>3 / 3</span>
+        <button style={g3p ? S.btnP : S.btnD} onClick={() => g3p && go("g3img")}>Next</button>
+      </div>
+    </div>
+  );
 
-        // Keyboard navigation
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowRight' || event.key === ' ') {
-                event.preventDefault();
-                if (currentSlideIndex < totalSlides - 1) changeSlide(1);
-            } else if (event.key === 'ArrowLeft') {
-                event.preventDefault();
-                if (currentSlideIndex > 0) changeSlide(-1);
-            }
-        });
+  if (stage === "g3img") {
+    const imgKey = g3i ? g3i.split("_")[0] : null;
+    const conflict = g3p && imgKey && g3p !== imgKey;
+    return (
+      <div style={S.wrap}>
+        <ProgressBar stage={stage} />
+        <span style={S.label}>Image confirmation</span>
+        <div style={S.title}>Which image has the most pull for you?</div>
+        <div style={S.sub}>Don't analyze. Choose the one you feel most drawn to.</div>
+        {conflict && <div style={S.conflict}>Your image choice differs from your paragraph choice. Both are useful — bring both to the workshop.</div>}
+        <div style={S.imgGrid}>
+          {allImgs.map(img => {
+            const sel = g3i === img.key + "_" + img.id;
+            return (
+              <div key={img.id} style={S.imgWrap(sel)} onClick={() => setG3i(img.key + "_" + img.id)}>
+                <img src={img.src} alt={img.alt} style={S.img} loading="lazy" crossOrigin="anonymous" />
+                {sel && <div style={S.check}><div style={S.checkDot} /></div>}
+              </div>
+            );
+          })}
+        </div>
+        <div style={S.nav}>
+          <button style={S.btn} onClick={() => go("g3para")}>Back</button>
+          <span />
+          <button style={g3i ? S.btnP : S.btnD} onClick={() => g3i && go("result")}>See my type</button>
+        </div>
+      </div>
+    );
+  }
 
-        // Initialize
-        showSlide(0);
-    </script>
+  if (stage === "result") {
+    const tn = typeMap[g1s + g2s];
+    const t = types[tn];
+    const instData = g3.find(p => p.l === g3p);
+    const addon = addons[g3p][tn];
+    const code = g1s + g2s + g3p;
+    const imgKey = g3i ? g3i.split("_")[0] : null;
+    const conflict = g3p && imgKey && g3p !== imgKey;
+    const altLabel = conflict ? g3.find(p => p.l === imgKey)?.label : null;
+    const rows = [
+      ["Core fear", t.fear, false],
+      ["The strategy", t.strategy, false],
+      ["What it gives", t.gift, false],
+      ["What it costs", t.cost, false],
+      ["Instinct adds", addon, false],
+      ["Sit with this", t.inquiry, true]
+    ];
+    return (
+      <div style={S.wrap}>
+        <div style={S.code}>{code}</div>
+        <div style={S.rName}>{t.name}</div>
+        <div style={S.rInst}>{instData.label} instinct</div>
+        <div style={S.card}>
+          {rows.map(([label, val, last], i) => (
+            <div key={label} style={S.row(i === rows.length - 1)}>
+              <div style={S.rowLabel}>{label}</div>
+              <div style={{ ...S.rowVal, fontStyle: last ? "italic" : "normal" }}>{val}</div>
+            </div>
+          ))}
+        </div>
+        {conflict && <div style={S.second}>Your image selection pointed toward <strong>{altLabel}</strong>. Bring both to the workshop — the tension between them is often where the most useful self-inquiry begins.</div>}
+        <p style={S.note}>This is a starting point, not a verdict. Bring this result and your questions to the workshop.</p>
+        <div style={S.nav}><button style={S.btn} onClick={restart}>Start over</button><span /></div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
 </body>
 </html>
