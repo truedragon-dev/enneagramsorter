@@ -54,24 +54,40 @@ const g3 = [
   { l: "S", label: "Social", t: "I'm always aware of the room, the group, the system I'm part of. I notice where I stand, how things are going collectively, what the dynamics are between people, what my role is and whether it's working. I care about belonging and about contributing to something beyond myself. I track how the group is functioning, where there's tension, who's in and who's out, whether things are fair. Sometimes this shows up as wanting to be recognized and valued by the community I'm part of. Other times it shows up as wanting to make sure the group is working well, even at personal cost. What I find hardest is feeling like I don't belong, or like my contribution doesn't matter." }
 ];
 
-const typeMap = { AX:7,AY:8,AZ:3,BX:9,BY:4,BZ:5,CX:2,CY:6,CZ:1 };
+// Scoring: rank 1=3pts, rank 2=2pts, rank 3=1pt
+// G1: A=assertive(3,7,8), B=withdrawn(4,5,9), C=compliant(1,2,6)
+// G2: X=positive(7,9,2), Y=reactive(8,4,6), Z=competent(3,5,1)
+const typeScores = (g1ranks, g2ranks) => {
+  // g1ranks: {A:3,B:2,C:1} or similar
+  // g2ranks: {X:3,Y:2,Z:1} or similar
+  const scores = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+  // G1 contribution
+  scores[3] += g1ranks.A; scores[7] += g1ranks.A; scores[8] += g1ranks.A;
+  scores[4] += g1ranks.B; scores[5] += g1ranks.B; scores[9] += g1ranks.B;
+  scores[1] += g1ranks.C; scores[2] += g1ranks.C; scores[6] += g1ranks.C;
+  // G2 contribution
+  scores[7] += g2ranks.X; scores[9] += g2ranks.X; scores[2] += g2ranks.X;
+  scores[8] += g2ranks.Y; scores[4] += g2ranks.Y; scores[6] += g2ranks.Y;
+  scores[3] += g2ranks.Z; scores[5] += g2ranks.Z; scores[1] += g2ranks.Z;
+  return scores;
+};
 
 const types = {
-  1:{name:"Type 1 — Strict Perfectionist",fear:"Being wrong, corrupt, or morally flawed",strategy:"Maintain standards. Correct what's imperfect. Control through integrity.",gift:"Principled, responsible, precise — brings care and quality to everything",cost:"Chronic resentment, self-criticism, difficulty relaxing into good enough",inquiry:"What would it feel like if this were enough, exactly as it is?"},
-  2:{name:"Type 2 — Considerate Helper",fear:"Being unwanted or unlovable without giving something first",strategy:"Anticipate needs. Be indispensable. Secure love through giving.",gift:"Warm, empathetic, generous — deeply attuned to what others need",cost:"Difficulty receiving, resentment when giving goes unrecognized, loss of self",inquiry:"What do you need right now — not what does everyone else need?"},
-  3:{name:"Type 3 — Competitive Achiever",fear:"Being worthless or a failure without achievement",strategy:"Perform. Produce results. Secure value through success and image.",gift:"Efficient, adaptable, motivating — makes things happen",cost:"Disconnection from authentic feeling, image over intimacy, burnout",inquiry:"Who are you when no one is evaluating your performance?"},
-  4:{name:"Type 4 — Intense Creative",fear:"Being ordinary or having no distinctive significance",strategy:"Cultivate depth and uniqueness. Secure identity through what makes me different.",gift:"Creative, authentic, emotionally perceptive — brings depth and originality",cost:"Idealization of what's missing, chronic longing, mood volatility",inquiry:"What's actually here right now — not what's missing?"},
-  5:{name:"Type 5 — Quiet Specialist",fear:"Being helpless, incompetent, or overwhelmed by others' demands",strategy:"Conserve energy. Gather knowledge. Secure safety through self-sufficiency.",gift:"Perceptive, objective, innovative — brings precision and original thinking",cost:"Withdrawal, emotional distance, difficulty with spontaneous engagement",inquiry:"What might happen if you let someone in before you feel fully ready?"},
-  6:{name:"Type 6 — Loyal Skeptic",fear:"Being without support or caught off guard",strategy:"Scan for threat. Test loyalty. Secure safety through preparation and vigilance.",gift:"Reliable, thorough, fiercely loyal — anticipates what others miss",cost:"Anxiety, self-doubt, difficulty trusting when things are actually okay",inquiry:"What does your body tell you right now, before your mind starts rehearsing?"},
-  7:{name:"Type 7 — Enthusiastic Visionary",fear:"Being trapped in pain, deprivation, or limitation",strategy:"Keep options open. Reframe toward positive. Secure freedom through possibility.",gift:"Optimistic, imaginative, energizing — generates ideas and momentum",cost:"Scattered attention, unfinished depth, difficulty staying with discomfort",inquiry:"What happens if you stay with this feeling instead of moving past it?"},
-  8:{name:"Type 8 — The Challenger",fear:"Being weak, controlled, or betrayed",strategy:"Take charge. Project strength. Secure autonomy through power and directness.",gift:"Confident, decisive, protective — advocates fiercely for what matters",cost:"Difficulty with vulnerability, tendency to dominate, can push people away",inquiry:"What becomes possible when you let someone see where you're soft?"},
-  9:{name:"Type 9 — Adaptive Peacemaker",fear:"Being in conflict or disconnected from others",strategy:"Accommodate. Minimize friction. Secure belonging through harmony.",gift:"Receptive, calming, genuinely collaborative — holds space for everyone",cost:"Self-erasure, difficulty knowing own wants, passive resistance when pushed",inquiry:"What do you actually want here — not what keeps the peace?"}
+  1:{name:"Type 1 — Strict Perfectionist",short:"Principled, purposeful, self-controlled, perfectionistic",fear:"Being wrong, corrupt, or morally flawed",strategy:"Maintain standards. Correct what's imperfect. Control through integrity.",gift:"Principled, responsible, precise — brings care and quality to everything",cost:"Chronic resentment, self-criticism, difficulty relaxing into good enough",inquiry:"What would it feel like if this were enough, exactly as it is?",portrait:"The principled, idealistic type. Ones are conscientious and ethical, with a strong sense of right and wrong. They are teachers, crusaders, and advocates for change — always striving to improve things, but afraid of making a mistake. Well-organized and fastidious, they try to maintain high standards, but can slip into being critical and perfectionistic. They typically struggle with resentment and impatience. At their best: wise, discerning, realistic, and noble."},
+  2:{name:"Type 2 — Considerate Helper",short:"Caring, interpersonal, generous, people-pleasing",fear:"Being unwanted or unlovable without giving something first",strategy:"Anticipate needs. Be indispensable. Secure love through giving.",gift:"Warm, empathetic, generous — deeply attuned to what others need",cost:"Difficulty receiving, resentment when giving goes unrecognized, loss of self",inquiry:"What do you need right now — not what does everyone else need?",portrait:"The caring, interpersonal type. Twos are empathetic, sincere, and warm-hearted. They are friendly, generous, and self-sacrificing, but can also be people-pleasing and possessive. They are well-meaning and driven to be close to others, but can slip into doing things for others in order to be needed. They typically struggle with acknowledging their own needs. At their best: unselfish and altruistic, with unconditional love for others."},
+  3:{name:"Type 3 — Competitive Achiever",short:"Adaptable, success-oriented, driven, image-conscious",fear:"Being worthless or a failure without achievement",strategy:"Perform. Produce results. Secure value through success and image.",gift:"Efficient, adaptable, motivating — makes things happen",cost:"Disconnection from authentic feeling, image over intimacy, burnout",inquiry:"Who are you when no one is evaluating your performance?",portrait:"The adaptable, success-oriented type. Threes are self-assured, attractive, and charming. Ambitious, competent, and energetic, they can also be status-conscious and highly driven for advancement. They are diplomatic and poised, but can also be overly concerned with their image and what others think of them. They typically struggle with workaholism and competitiveness. At their best: self-accepting, authentic, role models who inspire others."},
+  4:{name:"Type 4 — Intense Creative",short:"Expressive, dramatic, self-absorbed, temperamental",fear:"Being ordinary or having no distinctive significance",strategy:"Cultivate depth and uniqueness. Secure identity through what makes me different.",gift:"Creative, authentic, emotionally perceptive — brings depth and originality",cost:"Idealization of what's missing, chronic longing, mood volatility",inquiry:"What's actually here right now — not what's missing?",portrait:"The introspective, romantic type. Fours are self-aware, sensitive, and reserved. They are emotionally honest, creative, and personal, but can also be moody and self-conscious. They can withhold themselves from others due to feeling vulnerable or defective. They typically struggle with melancholy, self-indulgence, and self-pity. At their best: inspired and highly creative, able to renew themselves and transform their experiences."},
+  5:{name:"Type 5 — Quiet Specialist",short:"Perceptive, innovative, secretive, isolated",fear:"Being helpless, incompetent, or overwhelmed by others' demands",strategy:"Conserve energy. Gather knowledge. Secure safety through self-sufficiency.",gift:"Perceptive, objective, innovative — brings precision and original thinking",cost:"Withdrawal, emotional distance, difficulty with spontaneous engagement",inquiry:"What might happen if you let someone in before you feel fully ready?",portrait:"The perceptive, cerebral type. Fives are alert, insightful, and curious. They are able to concentrate and focus on developing complex ideas and skills. Independent and inventive, they can also become preoccupied with their thoughts and become detached and high-strung. They typically struggle with isolation and eccentricity. At their best: visionary pioneers, often ahead of their time, able to see the world in an entirely new way."},
+  6:{name:"Type 6 — Loyal Skeptic",short:"Committed, security-oriented, engaging, responsible",fear:"Being without support or caught off guard",strategy:"Scan for threat. Test loyalty. Secure safety through preparation and vigilance.",gift:"Reliable, thorough, fiercely loyal — anticipates what others miss",cost:"Anxiety, self-doubt, difficulty trusting when things are actually okay",inquiry:"What does your body tell you right now, before your mind starts rehearsing?",portrait:"The committed, security-oriented type. Sixes are reliable, hard-working, responsible, and trustworthy. Excellent troubleshooters, they foresee problems and foster cooperation, but can also become defensive, evasive, and anxious. They can be cautious and indecisive, but also reactive and defiant. They typically struggle with self-doubt and suspicion. At their best: internally stable and self-reliant, courageously championing themselves and others."},
+  7:{name:"Type 7 — Enthusiastic Visionary",short:"Spontaneous, versatile, acquisitive, scattered",fear:"Being trapped in pain, deprivation, or limitation",strategy:"Keep options open. Reframe toward positive. Secure freedom through possibility.",gift:"Optimistic, imaginative, energizing — generates ideas and momentum",cost:"Scattered attention, unfinished depth, difficulty staying with discomfort",inquiry:"What happens if you stay with this feeling instead of moving past it?",portrait:"The busy, productive type. Sevens are extroverted, optimistic, versatile, and spontaneous. Playful and high-spirited, they can also misapply their many talents, becoming over-extended, scattered, and undisciplined. They constantly seek new and exciting experiences, but can become distracted and exhausted by staying on the go. They typically struggle with impatience and impulsiveness. At their best: focused on worthwhile goals, appreciative, joyous, and satisfied."},
+  8:{name:"Type 8 — The Challenger",short:"Self-confident, decisive, willful, confrontational",fear:"Being weak, controlled, or betrayed",strategy:"Take charge. Project strength. Secure autonomy through power and directness.",gift:"Confident, decisive, protective — advocates fiercely for what matters",cost:"Difficulty with vulnerability, tendency to dominate, can push people away",inquiry:"What becomes possible when you let someone see where you're soft?",portrait:"The powerful, assertive type. Eights are self-confident, strong, and decisive. Protective, resourceful, and straight-talking, they can also be ego-centric and domineering. Eights feel they must control their environment, sometimes becoming confrontational and intimidating. They typically struggle with their tempers and with allowing themselves to be vulnerable. At their best: self-mastering, using their strength to improve others' lives, becoming heroic, magnanimous, and inspiring."},
+  9:{name:"Type 9 — Adaptive Peacemaker",short:"Receptive, reassuring, agreeable, complacent",fear:"Being in conflict or disconnected from others",strategy:"Accommodate. Minimize friction. Secure belonging through harmony.",gift:"Receptive, calming, genuinely collaborative — holds space for everyone",cost:"Self-erasure, difficulty knowing own wants, passive resistance when pushed",inquiry:"What do you actually want here — not what keeps the peace?",portrait:"The easy-going, self-effacing type. Nines are accepting, trusting, and stable. Usually grounded, supportive, and often creative, they can also be too willing to go along with others to keep the peace. They want everything to go smoothly and be without conflict, but can tend to be complacent and emotionally distant. They typically struggle with inertia and stubbornness. At their best: indomitable and all-embracing, able to bring people together and heal conflicts."}
 };
 
 const addons = {
-  P:{1:"Your perfectionism organizes around your own routines, body, and material world — exacting standards about how you live and care for yourself.",2:"Your giving focuses close to home, tending and protecting the people in your immediate circle with fierce care.",3:"Your drive to succeed is grounded in material security. Achievement matters partly because it means you'll have enough.",4:"Your longing turns inward, attending closely to your own physical and emotional states.",5:"You conserve energy and resources carefully, highly self-sufficient and private about your needs.",6:"Your vigilance focuses on physical safety and stability — preparing carefully for what could go wrong close to home.",7:"You seek pleasure and satisfaction in immediate experience, comfort and sensory richness close at hand.",8:"Your need for control shows up in your immediate environment — survival secured on your own terms.",9:"You merge with your immediate environment and routines; disruption to daily rhythms can feel destabilizing."},
-  O:{1:"Your perfectionism focuses on reforming and improving others — more passionate and outwardly intense than the typical One.",2:"You seek deep, irreplaceable one-on-one bonds, wanting to be uniquely needed by specific people.",3:"Your drive focuses on attracting and winning specific people; image matters in the context of particular relationships.",4:"You seek the ideal connection with consuming intensity — longing and the search for depth organize your attention.",5:"You give select people full access while keeping others entirely out. Depth with one, distance from all others.",6:"You test loyalty through intensity, pushing against the people you care about to see if they'll stay.",7:"You seek fascination in specific people and can become fixated on particular connections that excite you.",8:"You seek intensity and real contact in one-on-one connection — consuming in how you give your full attention.",9:"You merge with specific people, adapting yourself to fit them until your own desires can disappear into theirs."},
-  S:{1:"Your perfectionism extends to improving the systems and communities you're part of — responsible for making things better.",2:"You give broadly to groups and communities, wanting to be needed and appreciated by many.",3:"You perform for an audience. Status and being seen as successful by your community organize your drive.",4:"You seek a distinctive place within your community, wanting to be recognized for what makes you unique.",5:"You engage with systems through knowledge and expertise, contributing meaningfully to the collective on your own terms.",6:"You organize your loyalty around groups and causes — belonging to something trustworthy gives you security.",7:"You seek stimulation and possibility within community, wanting to be part of something exciting.",8:"You protect and lead groups, taking responsibility for communities in your charge.",9:"You prioritize group harmony above all, mediating and smoothing conflict to make sure everyone feels included."}
+  P:{1:"Your perfectionism organizes around your own routines, body, and material world.",2:"Your giving focuses close to home, tending and protecting your immediate circle with fierce care.",3:"Your drive is grounded in material security. Achievement matters partly because it means you'll have enough.",4:"Your longing turns inward, attending closely to your own physical and emotional states.",5:"You conserve energy and resources carefully, highly self-sufficient and private about your needs.",6:"Your vigilance focuses on physical safety and stability — preparing carefully for what could go wrong close to home.",7:"You seek pleasure and satisfaction in immediate experience, comfort and sensory richness close at hand.",8:"Your need for control shows up in your immediate environment — survival secured on your own terms.",9:"You merge with your immediate environment and routines; disruption to daily rhythms can feel destabilizing."},
+  O:{1:"Your perfectionism focuses on reforming and improving others — more passionate and intense than the typical One.",2:"You seek deep, irreplaceable one-on-one bonds, wanting to be uniquely needed by specific people.",3:"Your drive focuses on attracting specific people; image matters in the context of particular relationships.",4:"You seek the ideal connection with consuming intensity — longing and the search for depth organize your attention.",5:"You give select people full access while keeping others entirely out. Depth with one, distance from all others.",6:"You test loyalty through intensity, pushing against the people you care about to see if they'll stay.",7:"You seek fascination in specific people and can become fixated on particular connections that excite you.",8:"You seek intensity and real contact in one-on-one connection — consuming in how you give your full attention.",9:"You merge with specific people, adapting yourself to fit them until your own desires can disappear into theirs."},
+  S:{1:"Your perfectionism extends to improving the systems and communities you're part of.",2:"You give broadly to groups and communities, wanting to be needed and appreciated by many.",3:"You perform for an audience. Status and recognition by your community organize your drive.",4:"You seek a distinctive place within your community, wanting to be recognized for what makes you unique.",5:"You engage with systems through knowledge and expertise, contributing to the collective on your own terms.",6:"You organize your loyalty around groups and causes — belonging to something trustworthy gives you security.",7:"You seek stimulation and possibility within community, wanting to be part of something exciting.",8:"You protect and lead groups, taking responsibility for communities in your charge.",9:"You prioritize group harmony above all, mediating conflict to make sure everyone feels included."}
 };
 
 function shuffle(arr) {
@@ -85,7 +101,7 @@ function shuffle(arr) {
 
 const stages = ["intro","g1","g2","g3para","g3img","result"];
 
-const S = {
+const css = {
   wrap: { maxWidth: 600, margin: "0 auto", padding: "32px 20px", fontFamily: "Georgia, serif", color: "#1a1a1a" },
   label: { fontSize: 11, color: "#999", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8, display: "block" },
   title: { fontSize: 22, fontWeight: 500, marginBottom: 10, lineHeight: 1.35 },
@@ -97,9 +113,13 @@ const S = {
   btnP: { padding: "10px 24px", fontSize: 14, border: "1px solid #1a1a1a", borderRadius: 8, background: "#1a1a1a", color: "#fff", cursor: "pointer" },
   btnD: { padding: "10px 24px", fontSize: 14, border: "1px solid #e0e0e0", borderRadius: 8, background: "#fafafa", cursor: "not-allowed", color: "#ccc" },
   step: { fontSize: 13, color: "#aaa" },
-  paraOpt: (sel) => ({ border: sel ? "1.5px solid #1a1a1a" : "1px solid #e0e0e0", borderRadius: 12, padding: "20px 22px", marginBottom: 12, cursor: "pointer", background: sel ? "#f5f5f3" : "#fff", transition: "all 0.15s" }),
-  letter: (sel) => ({ width: 28, height: 28, borderRadius: "50%", border: sel ? "none" : "1px solid #ddd", background: sel ? "#1a1a1a" : "#fafafa", color: sel ? "#fff" : "#aaa", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 600, marginBottom: 14 }),
-  optText: { fontSize: 14, lineHeight: 1.8, color: "#222" },
+  rankWrap: { border: "1px solid #e0e0e0", borderRadius: 12, padding: "20px 22px", marginBottom: 12, background: "#fff", position: "relative" },
+  rankWrapSelected: { border: "1.5px solid #1a1a1a", borderRadius: 12, padding: "20px 22px", marginBottom: 12, background: "#f5f5f3", position: "relative" },
+  rankBadge: (n) => ({ position: "absolute", top: 16, right: 16, width: 28, height: 28, borderRadius: "50%", background: n === 1 ? "#1a1a1a" : n === 2 ? "#555" : "#aaa", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 600 }),
+  rankInstr: { fontSize: 13, color: "#888", marginBottom: 16, fontStyle: "italic" },
+  optText: { fontSize: 14, lineHeight: 1.8, color: "#222", paddingRight: 40 },
+  rankBtns: { display: "flex", gap: 8, marginTop: 14 },
+  rankBtn: (active) => ({ padding: "5px 14px", fontSize: 13, border: active ? "1.5px solid #1a1a1a" : "1px solid #ddd", borderRadius: 6, background: active ? "#1a1a1a" : "#fff", color: active ? "#fff" : "#888", cursor: "pointer" }),
   imgGrid: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 28 },
   imgWrap: (sel) => ({ borderRadius: 10, overflow: "hidden", cursor: "pointer", border: sel ? "2.5px solid #1a1a1a" : "2.5px solid transparent", aspectRatio: "4/3", position: "relative", background: "#f0f0f0" }),
   img: { width: "100%", height: "100%", objectFit: "cover", display: "block" },
@@ -111,33 +131,62 @@ const S = {
   rowLabel: { fontSize: 11, color: "#aaa", minWidth: 110, paddingTop: 2, letterSpacing: "0.04em", textTransform: "uppercase", flexShrink: 0 },
   rowVal: { fontSize: 14, lineHeight: 1.65 },
   code: { fontSize: 11, color: "#bbb", letterSpacing: "0.14em", marginBottom: 6 },
-  rName: { fontSize: 26, fontWeight: 500, marginBottom: 4, lineHeight: 1.2 },
-  rInst: { fontSize: 14, color: "#888", marginBottom: 28 },
-  note: { fontSize: 13, color: "#777", lineHeight: 1.7, marginBottom: 24 },
+  rName: { fontSize: 24, fontWeight: 500, marginBottom: 4, lineHeight: 1.2 },
+  rInst: { fontSize: 14, color: "#888", marginBottom: 20 },
+  portrait: { fontSize: 14, lineHeight: 1.8, color: "#333", marginBottom: 24, padding: "18px 22px", background: "#f8f8f6", borderRadius: 12, border: "1px solid #ebe8e0" },
+  alsoLabel: { fontSize: 11, color: "#999", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 },
+  alsoCard: { border: "1px solid #eee", borderRadius: 10, padding: "14px 18px", marginBottom: 10, background: "#fff" },
+  alsoName: { fontSize: 15, fontWeight: 500, marginBottom: 4 },
+  alsoShort: { fontSize: 13, color: "#666", lineHeight: 1.5 },
+  note: { fontSize: 13, color: "#777", lineHeight: 1.7, marginBottom: 24, marginTop: 8 },
   second: { fontSize: 13, color: "#555", lineHeight: 1.65, padding: "14px 20px", background: "#f8f8f6", borderRadius: 10, border: "1px solid #ebe8e0", marginBottom: 18 }
 };
 
-function Para({ p, sel, onSel }) {
+function ProgressBar({ stage }) {
+  const pct = (stages.indexOf(stage) / (stages.length - 1)) * 100;
+  return <div style={css.bar}><div style={{ height: "100%", background: "#1a1a1a", borderRadius: 2, transition: "width 0.4s ease", width: pct + "%" }} /></div>;
+}
+
+function RankGroup({ paras, ranks, setRanks }) {
+  const assign = (letter, rank) => {
+    const newRanks = { ...ranks };
+    // remove this rank from whoever has it
+    Object.keys(newRanks).forEach(k => { if (newRanks[k] === rank) newRanks[k] = null; });
+    newRanks[letter] = newRanks[letter] === rank ? null : rank;
+    setRanks(newRanks);
+  };
+  const allRanked = paras.every(p => ranks[p.l] !== null && ranks[p.l] !== undefined);
   return (
-    <div style={S.paraOpt(sel)} onClick={onSel}>
-      <div style={S.letter(sel)}>{p.l}</div>
-      <div style={S.optText}>{p.t}</div>
+    <div>
+      <div style={css.rankInstr}>Rank all three: 1 = most like you, 2 = somewhat like you, 3 = least like you</div>
+      {paras.map(p => {
+        const r = ranks[p.l];
+        return (
+          <div key={p.l} style={r ? css.rankWrapSelected : css.rankWrap}>
+            {r && <div style={css.rankBadge(r)}>{r}</div>}
+            <div style={css.optText}>{p.t}</div>
+            <div style={css.rankBtns}>
+              {[1,2,3].map(n => (
+                <button key={n} style={css.rankBtn(r === n)} onClick={() => assign(p.l, n)}>
+                  {n === 1 ? "Most like me" : n === 2 ? "Somewhat like me" : "Least like me"}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-function ProgressBar({ stage }) {
-  const pct = (stages.indexOf(stage) / (stages.length - 1)) * 100;
-  return <div style={S.bar}><div style={{ height: "100%", background: "#1a1a1a", borderRadius: 2, transition: "width 0.4s ease", width: pct + "%" }} /></div>;
-}
-
 function App() {
   const [stage, setStage] = useState("intro");
-  const [g1s, setG1] = useState(null);
-  const [g2s, setG2] = useState(null);
-  const [g3p, setG3p] = useState(null);
-  const [g3i, setG3i] = useState(null);
+  const [g1ranks, setG1ranks] = useState({A:null,B:null,C:null});
+  const [g2ranks, setG2ranks] = useState({X:null,Y:null,Z:null});
+  const [g3ranks, setG3ranks] = useState({P:null,O:null,S:null});
+  const [g3img, setG3img] = useState(null);
   const [allImgs, setAllImgs] = useState([]);
+  const [topTypes, setTopTypes] = useState([]);
 
   const buildImgs = () => shuffle([
     ...imgs.P.map((img, i) => ({ ...img, key: "P", id: "P" + i })),
@@ -147,108 +196,139 @@ function App() {
 
   useEffect(() => { setAllImgs(buildImgs()); }, []);
 
-  const go = (s) => setStage(s);
+  const allRanked = (ranks) => Object.values(ranks).every(v => v !== null && v !== undefined);
+
+  // Convert ranks to score points: rank1=3pts, rank2=2pts, rank3=1pt
+  const ranksToPoints = (ranks) => {
+    const pts = {};
+    Object.entries(ranks).forEach(([k, v]) => { pts[k] = v ? (4 - v) : 0; });
+    return pts;
+  };
+
+  const computeTopTypes = () => {
+    const g1pts = ranksToPoints(g1ranks);
+    const g2pts = ranksToPoints(g2ranks);
+    const scores = typeScores(g1pts, g2pts);
+    const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+    return sorted.slice(0,3).map(([t]) => parseInt(t));
+  };
+
+  const getInstinct = () => {
+    if (!allRanked(g3ranks)) return null;
+    return Object.entries(g3ranks).sort((a,b) => a[1]-b[1])[0][0];
+  };
+
+  const go = (s) => {
+    if (s === "result") { setTopTypes(computeTopTypes()); }
+    setStage(s);
+  };
 
   const restart = () => {
-    setStage("intro"); setG1(null); setG2(null); setG3p(null); setG3i(null);
+    setStage("intro");
+    setG1ranks({A:null,B:null,C:null});
+    setG2ranks({X:null,Y:null,Z:null});
+    setG3ranks({P:null,O:null,S:null});
+    setG3img(null);
+    setTopTypes([]);
     setAllImgs(buildImgs());
   };
 
   if (stage === "intro") return (
-    <div style={S.wrap}>
-      <span style={S.label}>Adaptive Strategy Assessment</span>
-      <div style={S.title}>Find your adaptive strategy</div>
-      <div style={S.sub}>Three short sorting exercises. Each approaches self-knowledge from a different angle.<br /><br />Choose what feels most true — not what sounds best. No right answers. About five to eight minutes.</div>
-      <div style={S.divider} />
-      <div style={{ ...S.sub, fontSize: 13 }}>This is a starting point. Your type will clarify through the workshop itself.</div>
-      <div style={S.nav}><span /><button style={S.btnP} onClick={() => go("g1")}>Begin</button></div>
+    <div style={css.wrap}>
+      <span style={css.label}>Adaptive Strategy Assessment</span>
+      <div style={css.title}>Find your adaptive strategy</div>
+      <div style={css.sub}>Three sorting exercises. Each approaches self-knowledge from a different angle.<br /><br />Rank each set from most to least like you. Don't overthink — go with your first instinct. About eight to ten minutes.</div>
+      <div style={css.divider} />
+      <div style={{...css.sub, fontSize: 13}}>This is a starting point. Your type will clarify through the workshop itself.</div>
+      <div style={css.nav}><span /><button style={css.btnP} onClick={() => go("g1")}>Begin</button></div>
     </div>
   );
 
   if (stage === "g1") return (
-    <div style={S.wrap}>
+    <div style={css.wrap}>
       <ProgressBar stage={stage} />
-      <span style={S.label}>Part one of three</span>
-      <div style={S.title}>Read all three. Choose the one that feels most like you.</div>
-      <div style={S.sub}>Not who you want to be — the one with the most ring of truth about how you've generally moved through life.</div>
-      {g1.map(p => <Para key={p.l} p={p} sel={g1s === p.l} onSel={() => setG1(p.l)} />)}
-      <div style={S.nav}>
-        <button style={S.btn} onClick={() => go("intro")}>Back</button>
-        <span style={S.step}>1 / 3</span>
-        <button style={g1s ? S.btnP : S.btnD} onClick={() => g1s && go("g2")}>Next</button>
+      <span style={css.label}>Part one of three</span>
+      <div style={css.title}>Rank all three from most to least like you.</div>
+      <div style={css.sub}>How you've generally moved through life — not your best self, not who you want to be.</div>
+      <RankGroup paras={g1} ranks={g1ranks} setRanks={setG1ranks} />
+      <div style={css.nav}>
+        <button style={css.btn} onClick={() => go("intro")}>Back</button>
+        <span style={css.step}>1 / 3</span>
+        <button style={allRanked(g1ranks) ? css.btnP : css.btnD} onClick={() => allRanked(g1ranks) && go("g2")}>Next</button>
       </div>
     </div>
   );
 
   if (stage === "g2") return (
-    <div style={S.wrap}>
+    <div style={css.wrap}>
       <ProgressBar stage={stage} />
-      <span style={S.label}>Part two of three</span>
-      <div style={S.title}>Read all three. Choose the one that feels most like you.</div>
-      <div style={S.sub}>Again — the one with the most truth, not the most appeal.</div>
-      {g2.map(p => <Para key={p.l} p={p} sel={g2s === p.l} onSel={() => setG2(p.l)} />)}
-      <div style={S.nav}>
-        <button style={S.btn} onClick={() => go("g1")}>Back</button>
-        <span style={S.step}>2 / 3</span>
-        <button style={g2s ? S.btnP : S.btnD} onClick={() => g2s && go("g3para")}>Next</button>
+      <span style={css.label}>Part two of three</span>
+      <div style={css.title}>Rank all three from most to least like you.</div>
+      <div style={css.sub}>Your emotional and relational style — the one with the most truth, not the most appeal.</div>
+      <RankGroup paras={g2} ranks={g2ranks} setRanks={setG2ranks} />
+      <div style={css.nav}>
+        <button style={css.btn} onClick={() => go("g1")}>Back</button>
+        <span style={css.step}>2 / 3</span>
+        <button style={allRanked(g2ranks) ? css.btnP : css.btnD} onClick={() => allRanked(g2ranks) && go("g3para")}>Next</button>
       </div>
     </div>
   );
 
   if (stage === "g3para") return (
-    <div style={S.wrap}>
+    <div style={css.wrap}>
       <ProgressBar stage={stage} />
-      <span style={S.label}>Part three of three</span>
-      <div style={S.title}>Read all three. Choose the one that feels most like you.</div>
-      <div style={S.sub}>These describe what your attention is quietly attending to underneath everything else.</div>
-      {g3.map(p => <Para key={p.l} p={p} sel={g3p === p.l} onSel={() => setG3p(p.l)} />)}
-      <div style={S.nav}>
-        <button style={S.btn} onClick={() => go("g2")}>Back</button>
-        <span style={S.step}>3 / 3</span>
-        <button style={g3p ? S.btnP : S.btnD} onClick={() => g3p && go("g3img")}>Next</button>
+      <span style={css.label}>Part three of three</span>
+      <div style={css.title}>Rank all three from most to least like you.</div>
+      <div style={css.sub}>What your attention is quietly attending to underneath everything else.</div>
+      <RankGroup paras={g3} ranks={g3ranks} setRanks={setG3ranks} />
+      <div style={css.nav}>
+        <button style={css.btn} onClick={() => go("g2")}>Back</button>
+        <span style={css.step}>3 / 3</span>
+        <button style={allRanked(g3ranks) ? css.btnP : css.btnD} onClick={() => allRanked(g3ranks) && go("g3img")}>Next</button>
       </div>
     </div>
   );
 
   if (stage === "g3img") {
-    const imgKey = g3i ? g3i.split("_")[0] : null;
-    const conflict = g3p && imgKey && g3p !== imgKey;
     return (
-      <div style={S.wrap}>
+      <div style={css.wrap}>
         <ProgressBar stage={stage} />
-        <span style={S.label}>Image confirmation</span>
-        <div style={S.title}>Which image has the most pull for you?</div>
-        <div style={S.sub}>Don't analyze. Choose the one you feel most drawn to.</div>
-        {conflict && <div style={S.conflict}>Your image choice differs from your paragraph choice. Both are useful — bring both to the workshop.</div>}
-        <div style={S.imgGrid}>
+        <span style={css.label}>Image confirmation</span>
+        <div style={css.title}>Which image has the most pull for you?</div>
+        <div style={css.sub}>Don't analyze. Choose the one you feel most drawn to. This confirms your instinct ranking.</div>
+        <div style={css.imgGrid}>
           {allImgs.map(img => {
-            const sel = g3i === img.key + "_" + img.id;
+            const sel = g3img === img.id;
             return (
-              <div key={img.id} style={S.imgWrap(sel)} onClick={() => setG3i(img.key + "_" + img.id)}>
-                <img src={img.src} alt={img.alt} style={S.img} loading="lazy" crossOrigin="anonymous" />
-                {sel && <div style={S.check}><div style={S.checkDot} /></div>}
+              <div key={img.id} style={css.imgWrap(sel)} onClick={() => setG3img(img.id)}>
+                <img src={img.src} alt={img.alt} style={css.img} loading="lazy" />
+                {sel && <div style={css.check}><div style={css.checkDot} /></div>}
               </div>
             );
           })}
         </div>
-        <div style={S.nav}>
-          <button style={S.btn} onClick={() => go("g3para")}>Back</button>
+        <div style={css.nav}>
+          <button style={css.btn} onClick={() => go("g3para")}>Back</button>
           <span />
-          <button style={g3i ? S.btnP : S.btnD} onClick={() => g3i && go("result")}>See my type</button>
+          <button style={g3img ? css.btnP : css.btnD} onClick={() => g3img && go("result")}>See my results</button>
         </div>
       </div>
     );
   }
 
   if (stage === "result") {
-    const tn = typeMap[g1s + g2s];
-    const t = types[tn];
-    const instData = g3.find(p => p.l === g3p);
-    const addon = addons[g3p][tn];
-    const code = g1s + g2s + g3p;
-    const imgKey = g3i ? g3i.split("_")[0] : null;
-    const conflict = g3p && imgKey && g3p !== imgKey;
-    const altLabel = conflict ? g3.find(p => p.l === imgKey)?.label : null;
+    const [primary, second, third] = topTypes;
+    const t = types[primary];
+    const inst = getInstinct();
+    const instData = g3.find(p => p.l === inst);
+    const addon = inst ? addons[inst][primary] : "";
+
+    // Image instinct
+    const imgInst = g3img ? allImgs.find(i => i.id === g3img)?.key : null;
+    const paraInst = inst;
+    const instConflict = imgInst && paraInst && imgInst !== paraInst;
+    const imgInstLabel = instConflict ? g3.find(p => p.l === imgInst)?.label : null;
+
     const rows = [
       ["Core fear", t.fear, false],
       ["The strategy", t.strategy, false],
@@ -257,22 +337,41 @@ function App() {
       ["Instinct adds", addon, false],
       ["Sit with this", t.inquiry, true]
     ];
+
     return (
-      <div style={S.wrap}>
-        <div style={S.code}>{code}</div>
-        <div style={S.rName}>{t.name}</div>
-        <div style={S.rInst}>{instData.label} instinct</div>
-        <div style={S.card}>
+      <div style={css.wrap}>
+        <span style={css.label}>Your most likely type</span>
+        <div style={css.rName}>{t.name}</div>
+        {instData && <div style={css.rInst}>{instData.label} instinct</div>}
+
+        <div style={css.portrait}>{t.portrait}</div>
+
+        <div style={css.card}>
           {rows.map(([label, val, last], i) => (
-            <div key={label} style={S.row(i === rows.length - 1)}>
-              <div style={S.rowLabel}>{label}</div>
-              <div style={{ ...S.rowVal, fontStyle: last ? "italic" : "normal" }}>{val}</div>
+            <div key={label} style={css.row(i === rows.length - 1)}>
+              <div style={css.rowLabel}>{label}</div>
+              <div style={{...css.rowVal, fontStyle: last ? "italic" : "normal"}}>{val}</div>
             </div>
           ))}
         </div>
-        {conflict && <div style={S.second}>Your image selection pointed toward <strong>{altLabel}</strong>. Bring both to the workshop — the tension between them is often where the most useful self-inquiry begins.</div>}
-        <p style={S.note}>This is a starting point, not a verdict. Bring this result and your questions to the workshop.</p>
-        <div style={S.nav}><button style={S.btn} onClick={restart}>Start over</button><span /></div>
+
+        {instConflict && (
+          <div style={css.second}>Your image selection pointed toward <strong>{imgInstLabel}</strong>. Bring both to the workshop — the tension between them is often where the most useful self-inquiry begins.</div>
+        )}
+
+        <div style={css.divider} />
+
+        <div style={css.alsoLabel}>Also explore</div>
+        {[second, third].map(tn => (
+          <div key={tn} style={css.alsoCard}>
+            <div style={css.alsoName}>{types[tn].name}</div>
+            <div style={css.alsoShort}>{types[tn].short}</div>
+          </div>
+        ))}
+
+        <p style={css.note}>These three types represent your most likely territory. Read all three descriptions and notice which one feels most true from the inside — not from the outside. Bring your questions to the workshop.</p>
+
+        <div style={css.nav}><button style={css.btn} onClick={restart}>Start over</button><span /></div>
       </div>
     );
   }
